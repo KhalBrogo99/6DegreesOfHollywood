@@ -66,9 +66,36 @@ namespace ActorGraphs
             Graph g = new Graph(actor1, actor2, client);
 
             //Printing every actor that Henry Cavill has been in a movie with
-            bool fun = g.DFS(client, actor1, actor2);
+            //timers for bfs and dfs
+            long bfsTime = 0;
+            long dfsTime = 0;
+            //create stopwatch
+            var stopWatch = new System.Diagnostics.Stopwatch();
 
+            Console.WriteLine();
+
+            //start stopwatch, stop after dfs is executed
+            stopWatch.Start();
+            Console.WriteLine("Executing using DFS...");
+            bool fun = g.DFS(client, actor1, actor2);
+            stopWatch.Stop();
+            dfsTime = stopWatch.ElapsedMilliseconds;
+
+            stopWatch.Reset(); //reset stopwatch
+
+            Console.WriteLine();//add extra space
+
+            //start stopwatch, stop after dfs is executed
+            stopWatch.Start();
+            Console.WriteLine("Executing using BFS...");
             fun = g.BFS(client, actor1, actor2);
+            stopWatch.Stop();
+            bfsTime = stopWatch.ElapsedMilliseconds;
+
+            //display timer results
+            Console.WriteLine();
+            Console.WriteLine("DFS elapsed time (ms): " + dfsTime);
+            Console.WriteLine("BFS elapsed time (ms): " + bfsTime);
 
             //From what I found online this is the only way to stop a C# console window from automatically closing
             System.Console.ReadLine();
