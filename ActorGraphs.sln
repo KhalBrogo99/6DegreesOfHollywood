@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActorGraphs", "ActorGraphs\ActorGraphs.csproj", "{8A4E990B-98CE-4D20-BFA7-F6A4DCEE83D9}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Six Degrees of Hollywood", "..\..\..\..\source\repos\Six Degrees of Hollywood\Six Degrees of Hollywood\Six Degrees of Hollywood.csproj", "{6647DD43-27C4-483E-956C-267D2B79BED4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{8A4E990B-98CE-4D20-BFA7-F6A4DCEE83D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A4E990B-98CE-4D20-BFA7-F6A4DCEE83D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A4E990B-98CE-4D20-BFA7-F6A4DCEE83D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6647DD43-27C4-483E-956C-267D2B79BED4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6647DD43-27C4-483E-956C-267D2B79BED4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6647DD43-27C4-483E-956C-267D2B79BED4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6647DD43-27C4-483E-956C-267D2B79BED4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
