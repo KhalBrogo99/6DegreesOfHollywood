@@ -63,6 +63,8 @@ namespace ActorGraphs
                     actor2 = client.GetPersonAsync(searchedResult2.Results[++index].Id, PersonMethods.MovieCredits).Result;
             }
 
+            Console.WriteLine();
+            Console.WriteLine("Creating graph between actors...");
             Graph g = new Graph(actor1, actor2, client);
 
             //Printing every actor that Henry Cavill has been in a movie with
@@ -83,7 +85,7 @@ namespace ActorGraphs
 
             stopWatch.Reset(); //reset stopwatch
 
-            Console.WriteLine();//add extra space
+            Console.WriteLine();
 
             //start stopwatch, stop after dfs is executed
             stopWatch.Start();
