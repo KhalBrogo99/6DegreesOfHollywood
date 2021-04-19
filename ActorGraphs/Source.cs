@@ -8,6 +8,18 @@ namespace ActorGraphs
     {
         static void Main(string[] args)
         {
+            bool rerun = true;
+            while (rerun)
+            {
+                rerun = Run();
+                Console.WriteLine();
+            }
+            Console.WriteLine("\nGoodbye!");
+            Console.ReadLine();
+        }
+
+        static bool Run()
+        {
             string APIkey = "0d2b5adffec3e19cd663b4cd400260f3";
 
             //Creating the client, big abstract methods are taken from this
@@ -19,7 +31,7 @@ namespace ActorGraphs
 
             //var is like the auto keyword in c++
             var searchedResult = client.SearchPersonAsync(toSearch).Result;
-            
+
             bool correctSearch = false;
             int index = 0;
             var actor1 = client.GetPersonAsync(searchedResult.Results[index].Id, PersonMethods.MovieCredits).Result;
@@ -33,7 +45,7 @@ namespace ActorGraphs
                     actor1 = client.GetPersonAsync(searchedResult.Results[++index].Id, PersonMethods.MovieCredits).Result;
             }
 
-            System.Console.WriteLine("Please enter the name of a second actor: ");
+            System.Console.WriteLine("\nPlease enter the name of a second actor: ");
 
             //Taking an input and searching for the actor
             string toSearch2 = System.Console.ReadLine();
@@ -63,7 +75,7 @@ namespace ActorGraphs
             Graph g = new Graph(actor1, actor2, client);
             stopWatch.Stop();
 
-            float graphTime = (float) stopWatch.ElapsedMilliseconds / 1000.2f / 60.2f;
+            float graphTime = (float)stopWatch.ElapsedMilliseconds / 1000.2f / 60.2f;
 
             Console.WriteLine();
             Console.WriteLine("Time for graph population (min): " + graphTime.ToString("n2"));
@@ -85,7 +97,7 @@ namespace ActorGraphs
             bfsTime = stopWatch.ElapsedTicks;
 
             //Reset stopwatch
-            stopWatch.Reset(); 
+            stopWatch.Reset();
 
             Console.WriteLine();
 
@@ -96,6 +108,9 @@ namespace ActorGraphs
             stopWatch.Stop();
             dfsTime = stopWatch.ElapsedTicks;
 
+            //Unwind was originally called in the DFS program but was taken out
+            //to directly compare the times for each traversal
+            //This is why the stack is outputted in the DFS algorithm
             g.Unwind(s, client, actor1);
 
             //display timer results
@@ -103,8 +118,14 @@ namespace ActorGraphs
             Console.WriteLine("DFS elapsed time (ticks): " + dfsTime);
             Console.WriteLine("BFS elapsed time (ticks): " + bfsTime);
 
-            //From what I found online this is the only way to stop a C# console window from automatically closing
-            System.Console.ReadLine();
+            Console.WriteLine();
+            Console.WriteLine("Press R to restart, or any other key to end the program.");
+            string restart = System.Console.ReadLine();
+            if (restart.ToLower().Equals("r"))
+                return true;
+            else
+                return false;
+
         }
     }
 }
