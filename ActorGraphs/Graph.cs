@@ -203,6 +203,7 @@ namespace ActorGraphs
                 s.Pop();
             }
             Console.WriteLine("Search failed!");
+            s.Clear();
             return s;
         }
 

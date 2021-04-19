@@ -111,7 +111,8 @@ namespace ActorGraphs
             //Unwind was originally called in the DFS program but was taken out
             //to directly compare the times for each traversal
             //This is why the stack is outputted in the DFS algorithm
-            g.Unwind(s, client, actor1);
+            if (s.Count != 0)
+                g.Unwind(s, client, actor1);
 
             //display timer results
             Console.WriteLine();
