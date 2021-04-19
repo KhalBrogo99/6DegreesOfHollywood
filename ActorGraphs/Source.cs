@@ -9,6 +9,7 @@ namespace ActorGraphs
         static void Main(string[] args)
         {
             bool rerun = true;
+            Console.WriteLine("Welcome to 6 Degrees of Hollywood!\n");
             while (rerun)
             {
                 rerun = Run();
@@ -17,7 +18,6 @@ namespace ActorGraphs
             Console.WriteLine("\nGoodbye!");
             Console.ReadLine();
         }
-
         static bool Run()
         {
             string APIkey = "0d2b5adffec3e19cd663b4cd400260f3";
