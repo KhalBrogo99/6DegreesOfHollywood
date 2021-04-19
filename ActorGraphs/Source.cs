@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TMDbLib.Objects.Changes;
 using TMDbLib.Objects.People;
-using TMDbLib.Objects.General;
-using TMDbLib.Objects.Search;
-using TMDbLib.Objects;
 using TMDbLib.Client;
-using TMDbLib.Utilities;
-using TMDbLib.Objects.Movies;
 
 namespace ActorGraphs
 {
@@ -65,39 +55,53 @@ namespace ActorGraphs
 
             Console.WriteLine();
             Console.WriteLine("Creating graph between actors...");
-            Graph g = new Graph(actor1, actor2, client);
 
-            //Printing every actor that Henry Cavill has been in a movie with
+            //create stopwatch
+            var stopWatch = new System.Diagnostics.Stopwatch();
+
+            stopWatch.Start();
+            Graph g = new Graph(actor1, actor2, client);
+            stopWatch.Stop();
+
+            float graphTime = (float) stopWatch.ElapsedMilliseconds / 1000.2f / 60.2f;
+
+            Console.WriteLine();
+            Console.WriteLine("Time for graph population (min): " + graphTime.ToString("n2"));
+
             //timers for bfs and dfs
             long bfsTime = 0;
             long dfsTime = 0;
-            //create stopwatch
-            var stopWatch = new System.Diagnostics.Stopwatch();
+
+            //Reset stopwatch
+            stopWatch.Reset();
+
+            Console.WriteLine();
+
+            //start stopwatch, stop after bfs is executed
+            stopWatch.Start();
+            Console.WriteLine("Executing using BFS...");
+            bool fun = g.BFS(client, actor1, actor2);
+            stopWatch.Stop();
+            bfsTime = stopWatch.ElapsedTicks;
+
+            //Reset stopwatch
+            stopWatch.Reset(); 
 
             Console.WriteLine();
 
             //start stopwatch, stop after dfs is executed
             stopWatch.Start();
             Console.WriteLine("Executing using DFS...");
-            bool fun = g.DFS(client, actor1, actor2);
+            var s = g.DFS(client, actor1, actor2);
             stopWatch.Stop();
-            dfsTime = stopWatch.ElapsedMilliseconds;
+            dfsTime = stopWatch.ElapsedTicks;
 
-            stopWatch.Reset(); //reset stopwatch
-
-            Console.WriteLine();
-
-            //start stopwatch, stop after dfs is executed
-            stopWatch.Start();
-            Console.WriteLine("Executing using BFS...");
-            fun = g.BFS(client, actor1, actor2);
-            stopWatch.Stop();
-            bfsTime = stopWatch.ElapsedMilliseconds;
+            g.Unwind(s, client, actor1);
 
             //display timer results
             Console.WriteLine();
-            Console.WriteLine("DFS elapsed time (ms): " + dfsTime);
-            Console.WriteLine("BFS elapsed time (ms): " + bfsTime);
+            Console.WriteLine("DFS elapsed time (ticks): " + dfsTime);
+            Console.WriteLine("BFS elapsed time (ticks): " + bfsTime);
 
             //From what I found online this is the only way to stop a C# console window from automatically closing
             System.Console.ReadLine();

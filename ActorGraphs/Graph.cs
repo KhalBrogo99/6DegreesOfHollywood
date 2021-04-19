@@ -1,15 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TMDbLib.Objects.Changes;
 using TMDbLib.Objects.People;
-using TMDbLib.Objects.General;
-using TMDbLib.Objects.Search;
-using TMDbLib.Objects;
 using TMDbLib.Client;
-using TMDbLib.Utilities;
 using TMDbLib.Objects.Movies;
 
 namespace ActorGraphs
@@ -172,7 +165,7 @@ namespace ActorGraphs
         }
 
         //Depth first search on the graph
-        public bool DFS(TMDbClient client, Person actor1, Person actor2)
+        public Stack<Tuple<int, int, int>> DFS(TMDbClient client, Person actor1, Person actor2)
         {
             //Set of visited actors (using actor IDs)
             HashSet<int> visited = new HashSet<int>();
@@ -203,13 +196,14 @@ namespace ActorGraphs
                     //Once it finds the actor, call this Unwind function
                     if (neighbor.Item1 == actor2.Id)
                     {
-                        Unwind(s, client, actor1, actor2);
-                        return true;
+                        Console.WriteLine("Found! Unwinding...");
+                        return s;
                     }
                 }
                 s.Pop();
             }
-            return false;
+            Console.WriteLine("Search failed!");
+            return s;
         }
 
         //Same as above but for breadth first search, standard algorithm with an added case for when it finds the second actor
@@ -233,17 +227,18 @@ namespace ActorGraphs
                     }
                     if (neighbor.Item1 == actor2.Id)
                     {
-                        Unwind(q, client, actor1, actor2);
+                        Console.WriteLine("Found! DFS will unwind.");
                         return true;
                     }
                 }
                 q.Dequeue();
             }
+            Console.WriteLine("Search failed!");
             return false;
         }
 
-        //Unwind overloaded for stack
-        public void Unwind(Stack<Tuple<int, int, int>> s, TMDbClient client, Person actor1, Person actor2)
+        //Unwind method
+        public void Unwind(Stack<Tuple<int, int, int>> s, TMDbClient client, Person actor1)
         {
             //As per DFS, the top of the stack of is the second actor
 
@@ -277,40 +272,6 @@ namespace ActorGraphs
                 //If the connected actor is the original actor, the code is finished
                 if (next == actor1.Name)
                     return;
-            }
-        }
-
-        //Unwind overloaded for Queue
-        public void Unwind(Queue<Tuple<int, int, int>> q, TMDbClient client, Person actor1, Person actor2)
-        {
-            //With BFS, the next in the queue is not the correct actor, so it must be found
-
-            //NEXT is the second actor
-            int nextID = actor2.Id;
-            while (q.Count != 0)
-            {
-
-                //Copying queue
-                Queue<Tuple<int, int, int>> tempQ = new Queue<Tuple<int, int, int>>(q);
-
-                //Find the current actor (actor2 in initial case)
-                while (tempQ.Peek().Item1 != nextID)
-                    tempQ.Dequeue();
-
-                //top is the current actor, next is the next connected actor, movieName is the name of the connected movie
-                string top = client.GetPersonAsync(tempQ.Peek().Item1).Result.Name;
-                string next = client.GetPersonAsync(tempQ.Peek().Item2).Result.Name;
-                string movieName = client.GetMovieAsync(tempQ.Peek().Item3).Result.Title;
-
-                //Printing out connections
-                Console.WriteLine(top + " is in " + movieName + " with " + next);
-
-                //If the next actor is the original, the code has finished
-                //otherwise the new current actor is the current actor's next
-                if (next == actor1.Name)
-                    return;
-                else
-                    nextID = tempQ.Peek().Item2;
             }
         }
     }
